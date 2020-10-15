@@ -1,9 +1,5 @@
-# -*- coding: utf-8 -*-
-"""part2. Парсер судебных дел РФ с сайта sudrf.ru
+"""Парсер судебных дел РФ с сайта sudrf.ru
 """
-
-# pip install grab
-# pip install psycopg2-binary
 
 import csv
 import logging
@@ -14,10 +10,8 @@ from grab import Grab, proxylist
 from grab.spider import Spider, Task
 
 
-_DB_NAME = 'd9gh4k8vaf70js'
-_DSN = (
-    'postgres://fivostozwliibo:e64c8130b9e976c592ffdbaf605e0433973f4250cd9a098196a5116c2b8b45e4'
-    '@ec2-52-208-175-161.eu-west-1.compute.amazonaws.com:5432')
+_CACHE_DB_NAME = 'crm'
+_CACHE_DSN = 'postgres://zaebee@'
 
 _COURTS_URL = (
     'https://sudrf.ru/index.php?id=300'
@@ -214,7 +208,7 @@ if __name__ == '__main__':
 
         bot = CourtSpider(network_try_limit=5, thread_number=25, config=config)
         logging.info('Bot initialzed with config: %s', bot.config)
-        bot.setup_cache('postgresql', 'crm', dsn='postgres://zaebee@')
+        bot.setup_cache('postgresql', _CACHE_DB_NAME, dsn=_CACHE_DSN)
         bot.load_proxylist(proxyurl, 'url', proxytype)
 
         bot.run()
